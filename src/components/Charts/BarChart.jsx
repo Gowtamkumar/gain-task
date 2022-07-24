@@ -33,12 +33,6 @@ const BarChartReport = (value, booleanvalue) => {
   }
 }
 
-// console.log("used_phone", BarChartReport("used_phone", true));
-// console.log("official_warranty", BarChartReport("official_warranty", true));
-// console.log("unofficial_warranty", BarChartReport("unofficial_warranty", true));
-// console.log("no_warranty", BarChartReport("no_warranty", true));
-
-
 export const options = {
   responsive: true,
   plugins: {
@@ -71,8 +65,7 @@ export const data = {
         BarChartReport("no_warranty", true).length,
         BarChartReport("used_phone", true).length,
       ],
-      backgroundColor: 'rgba(255, 99, 132, 0.5)',
-     
+      backgroundColor: '#0095A0',
     }
   ],
 };

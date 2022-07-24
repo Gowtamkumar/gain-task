@@ -14,11 +14,7 @@ const ProductFilter = (value) => {
   }
 }
 
-let total = ProductFilter("Pickaboo").length + ProductFilter("Daraz").length + ProductFilter("Bikroy.com").length
-// console.log("ddd", total);
-// console.log("Daraz", (total / 100) * ProductFilter("Daraz").length);
-// console.log("Bikroy", (total / 100) * ProductFilter("Bikroy.com").length);
-// console.log("Pickaboo", (total / 100) * ProductFilter("Pickaboo").length);
+let total = ProductFilter("Pickaboo").length + ProductFilter("Daraz").length + ProductFilter("Bikroy.com").length;
 
 export const options = {
   responsive: true,
@@ -48,9 +44,9 @@ export const data = {
         (total / 100) * ProductFilter("Bikroy.com").length,
         (total / 100) * ProductFilter("Pickaboo").length],
       backgroundColor: [
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 206, 86, 0.2)',
+        '#0095A0',
+        '#FFC239',
+        '#84AF27',
 
       ],
       borderColor: [
@@ -59,7 +55,6 @@ export const data = {
         'rgba(255, 206, 86, 1)',
 
       ]
-
     },
   ],
 };
@@ -67,7 +62,6 @@ export const data = {
 
 export default function PieChart() {
   return (
-
     <Pie options={options} data={data} />
   )
 }

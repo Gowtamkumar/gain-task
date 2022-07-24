@@ -6,16 +6,15 @@ import BarChart from './components/Charts/BarChart';
 import PieChart from './components/Charts/PieChart';
 import data from './Data/data.1658411149.js'
 import { useState } from 'react';
-import ImageGallery from 'react-image-gallery';
 
 function App() {
   const [filterValue, setFilterValue] = useState('All Products')
   const [limit, setLimit] = useState(0);
 
   const filterProducts = (value) => {
-
     return data.filter((item, index) => {
-      item.tags = ["Best Value", "Best Camera", "Best Performance"]
+      item.tags = ["Best Value", "Best Camera", "Best Performance"];
+
       if (value === "Best Value") {
         item.tags = ["Best Value"]
         return (item.phone_price <= 20000 && item.ram >= "4") &&
@@ -42,13 +41,6 @@ function App() {
     })
   }
 
-  // console.log("filterProducts", filterProducts(filterValue).length);
-
-  // const handleChange = ({ target }) => {
-  // }
-  // console.log("dd", filterProducts());
-  // const max = 100;
-
   window.addEventListener('scroll', () => {
     const {
       scrollTop,
@@ -64,8 +56,6 @@ function App() {
   }, {
     passive: true
   });
-
-
 
   // const handleShowMore = () => {
   //   if (limit <= filterProducts(filterValue).length) {
@@ -125,12 +115,11 @@ function App() {
               </thead>
               <tbody>
                 {filterProducts(filterValue).length <= 0 ?
-
-                  <tr class="text-center">
+                  <tr className="text-center">
                     <th colSpan={4}>
                       <div className='text-primary'>
-                        <span class="visually-hidden">Loading...</span>
-                        <div class="spinner-border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                        <div className="spinner-border" role="status">
                         </div>
                       </div>
                     </th>
@@ -140,7 +129,7 @@ function App() {
                       <tr key={index}>
                         <td className='w-auto'>
                           <div className='d-flex align-items-center'>
-                            <img src={item?.phone_images[0] || []} className="card-img-top" alt="..." style={{ width: "80px", height: '100px' }} />
+                            <img src={item?.phone_images[0]} className="card-img-top" key={index} alt="..." style={{ width: "100px", height: '100px' }} />
                             <div className='mx-2'>
                               <h5>{item?.phone_title}</h5>
                               <h5>{item?.brand}</h5>
@@ -150,19 +139,15 @@ function App() {
                         <td className='w-auto'>{item?.ram}/{item?.storage}</td>
                         <td className='w-auto'>
                           {item.tags.map((tagItem, index) => {
-                            return <span className={`${tagItem === "Best Value" ? "bg-success" : tagItem === "Best Camera" ? "bg-primary" : "bg-warning"} badge me-2`}>{tagItem}</span>
+                            return <span key={index} className={`${tagItem === "Best Value" ? "bg-success" : tagItem === "Best Camera" ? "bg-primary" : "bg-warning"} badge me-2`}>{tagItem}</span>
                           })}
                         </td>
                         <td>{item.phone_price.toLocaleString('en-bn', { style: 'currency', currency: 'BDT' })}</td>
                       </tr>)
                   })
                 }
-
               </tbody>
             </table>
-            {/* <div class=" col-md-12 d-grid gap-2 mt-3 text-justify-center" >
-              <button class="btn btn-primary" type="button"  >Load More</button>
-            </div> */}
           </div>
         </div>
 
