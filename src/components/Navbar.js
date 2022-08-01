@@ -1,32 +1,67 @@
-import React from "react"
+import React, { useState } from "react"
 import Select from 'react-select';
+import data from '../Data/data.1658411149'
 
 
-export default function Navbar() {
+export default function Navbar({ setSearch, setData}) {
   const options = [
     { value: 'Best Value', label: 'Best Value' },
     { value: 'Best Camara', label: 'Best Camara' },
-    { value: 'Best Parfarmance', label: 'Best Parfarmance' },
+    { value: 'Best Parfarmance', label: 'Best Parfarmance' }
   ];
+  const [formDataValues, setFormDataValues] = useState({});
 
+
+  const handleChange = ({ target }) => {
+    let newData = { ...formDataValues }
+    newData[target.name] = target.value
+    setFormDataValues(newData)
+  }
+
+  const handleSubmit = (event) => {
+    formDataValues.tags = formDataValues.tags.reduce((obj, item, index) => (obj[index] = item.value, obj), []);
+    // const newData = [ formDataValues]
+    formDataValues.ram = Number(formDataValues.ram)
+    formDataValues.storage = Number(formDataValues.storage);
+    formDataValues.phone_price = Number(formDataValues.phone_price);
+    setData(formDataValues)
+    event.preventDefault();
+  }
+
+
+  console.log("formDataValues", formDataValues);
   return (
     <nav className="navbar navbar-expand-lg navbar-light ">
       <div className="container">
         <span className="navbar-brand text-light fw-bold" href="#">LOGO</span>
-        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarScroll"
+          aria-controls="navbarScroll"
+          aria-expanded="false" aria-label="Toggle navigation"
+        >
           <span className="navbar-toggler-icon"></span>
         </button>
 
         <div className="collapse navbar-collapse" id="navbarScroll">
           <span className="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll"></span>
           <div className='me-4 text-light'>
-            <input type="text" className="search-form" placeholder="Search by Title or Brand" aria-label="Search by Title or Brand" aria-describedby="basic-addon2" />
+            <input
+              onChange={({ target }) => setSearch(target.value)}
+              type="text"
+              className="search-form"
+              placeholder="Search by Title or Brand"
+              aria-label="Search by Title or Brand"
+              aria-describedby="basic-addon2"
+            />
             <span className="icon" id="basic-addon2"><i className="fa fa-search"></i></span>
           </div>
           <button type="button" className="btn bg-light rounded-0 text-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
             Add Product
           </button>
-          
+
           <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div className="modal-dialog modal-lg">
               <div className="modal-content">
@@ -37,39 +72,84 @@ export default function Navbar() {
                 </div>
 
                 <div className="modal-body">
-                  <form className="row g-3">
+                  <form className="row g-3" onSubmit={handleSubmit}>
                     <div className="col-12">
                       <label htmlFor="productName" className="form-label">Product Name</label>
-                      <input type="text" className="form-control" id="productName" placeholder="Enter Product name" />
+                      <input
+                        onChange={handleChange}
+                        type="text"
+                        name="phone_title"
+                        className="form-control"
+                        id="productName"
+                        placeholder="Enter Product name"
+                      />
                     </div>
-                    <div className="col-md-6">
+                    <div className="col-md-4">
                       <label htmlFor="brand" className="form-label">Brand</label>
-                      <input type="text" className="form-control" id="brand" placeholder="Enter Brand Name" />
+                      <input
+                        onChange={handleChange}
+                        name="brand"
+                        type="text"
+                        className="form-control"
+                        id="brand"
+                        placeholder="Enter Brand Name"
+                      />
                     </div>
-                    <div className="col-md-6">
-                      <label htmlFor="ramRom" className="form-label">Ram/Rom</label>
-                      <input type="text" className="form-control" id="ramRom" placeholder="Enter Ran/Rom" />
+                    <div className="col-md-4">
+                      <label htmlFor="ram" className="form-label">Ram</label>
+                      <input
+                        onChange={handleChange}
+                        name='ram'
+                        type="number"
+                        className="form-control"
+                        id="ram"
+                        placeholder="Enter Ran"
+                      />
                     </div>
+                    <div className="col-md-4">
+                      <label htmlFor="rom" className="form-label">Rom</label>
+                      <input
+                        onChange={handleChange}
+                        name='storage'
+                        type="number"
+                        className="form-control"
+                        id="rom"
+                        placeholder="Enter Ran/Rom"
+                      />
+                    </div>
+
                     <div className="col-md-12">
                       <label className="form-label">Tag</label>
                       <Select
                         options={options}
                         placeholder="Select color"
-                        isSearchable={true}
+                        // isSearchable={true}
                         width='100%'
                         isMulti
+                        name="tags"
+                        onChange={(value) => handleChange({ target: { name: 'tags', value } })}
                       />
+
+
                     </div>
                     <div className="col-12">
                       <label htmlFor="price" className="form-label">Price</label>
-                      <input type="text" className="form-control" id="price" placeholder="Enter Price" />
+                      <input
+                        onChange={handleChange}
+                        name='phone_price'
+                        type="number"
+                        className="form-control"
+                        id="price"
+                        placeholder="Enter Price"
+                      />
+                    </div>
+                    <div className="modal-footer">
+                      <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                      <button type="submit" className="btn btn-primary">Publish</button>
                     </div>
                   </form>
                 </div>
-                <div className="modal-footer">
-                  <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                  <button type="button" className="btn btn-primary">Publish</button>
-                </div>
+
               </div>
             </div>
           </div>

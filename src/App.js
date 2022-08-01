@@ -1,21 +1,39 @@
+import { useEffect, useState } from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.min.js'
+import ReactPaginate from 'react-paginate';
+import data from './Data/data.1658411149.js'
 import Navbar from './components/Navbar';
 import BarChart from './components/Charts/BarChart';
 import PieChart from './components/Charts/PieChart';
-import data from './Data/data.1658411149.js'
-import { useState } from 'react';
+import Products from './components/Product/Products';
+
 
 function App() {
   const [filterValue, setFilterValue] = useState('All Products')
-  const [limit, setLimit] = useState(0);
+  const [search, setSearch] = useState('');
+  const [filterData, setFilterData] = useState([])
+  const [datas, setData] = useState([])
 
-  const filterProducts = (value) => {
-    return data.filter((item, index) => {
+  // Pagination state
+  const [pageCount, setPageCount] = useState(0);
+  const [itemOffset, setItemOffset] = useState(0);
+
+  const newData = [...data, datas]
+
+  useEffect(() => {
+    // Product Search 
+    const serarchFilterData = newData?.filter((item) =>
+      item.phone_title?.toUpperCase().includes(search.toUpperCase())
+      || item.brand?.toUpperCase().includes(search.toUpperCase())
+    )
+
+    // filter by Best Value or Best camara and best performance
+    const filterAll = serarchFilterData.filter((item, index) => {
       item.tags = ["Best Value", "Best Camera", "Best Performance"];
 
-      if (value === "Best Value") {
+      if (filterValue === "Best Value") {
         item.tags = ["Best Value"]
         return (item.phone_price <= 20000 && item.ram >= "4") &&
           (item.storage >= "64" && item.brand === "Xiaomi") ||
@@ -23,42 +41,54 @@ function App() {
           (item.storage >= "64" && item.brand === "Realme")
       }
 
-      if (value === "Best Camera") {
+      if (filterValue === "Best Camera") {
         item.tags = ["Best Camera"]
-        return (item.phone_details.mainCamera >= "16 MP" &&
-          item.phone_details.selfieCamera >= "13 MP" &&
-          item.phone_details.internal_storage >= "64")
+        return (item?.phone_details?.mainCamera >= "16 MP" &&
+          item?.phone_details.selfieCamera >= "13 MP" &&
+          item?.phone_details.internal_storage >= "64")
       }
-      if (value === "Best Performance") {
+      if (filterValue === "Best Performance") {
         item.tags = ["Best Performance"]
         return (
-          item.phone_details.chipset.match("Snapdragon") &&
-          item.phone_price > 20000 && item.ram > "4" && item.storage >= "128"
-          && item.speciality.includes('1080p display')
+          item?.phone_details?.chipset?.match("Snapdragon") &&
+          item?.phone_price > 20000 && item.ram > "4" && item.storage >= "128"
+          && item?.speciality.includes('1080p display')
         )
       }
       return item
-    })
-  }
+    });
 
-  window.addEventListener('scroll', () => {
-    const {
-      scrollTop,
-      scrollHeight,
-      clientHeight
-    } = document.documentElement;
+    setFilterData(filterAll);
 
-    if (scrollTop + clientHeight >= scrollHeight - 5 &&
-      limit <= filterProducts(filterValue).length) {
-      let newLimit = limit + 20;
-      setLimit(newLimit)
-    }
-  }, {
-    passive: true
-  });
+    // Pagination page count
+    setPageCount(Math.ceil(newData.length / 20));
+    
+  }, [search, filterValue, datas, itemOffset])
+
+  // Pagination handle click.
+  const handlePageClick = (event) => {
+    const newOffset = (event.selected * 20) % newData.length;
+    setItemOffset(newOffset);
+  };
+
+  // window.addEventListener('scroll', () => {
+  //   const {
+  //     scrollTop,
+  //     scrollHeight,
+  //     clientHeight
+  //   } = document.documentElement;
+
+  //   if (scrollTop + clientHeight >= scrollHeight - 5 &&
+  //     limit <= filterData.length) {
+  //     let newLimit = limit + 20;
+  //     setLimit(newLimit)
+  //   }
+  // }, {
+  //   passive: true
+  // });
 
   // const handleShowMore = () => {
-  //   if (limit <= filterProducts(filterValue).length) {
+  //   if (limit <= filterData.length) {
   //     let newLimit = limit + 20;
   //     setLimit(newLimit)
   //   }
@@ -68,7 +98,10 @@ function App() {
     <div className="container-fluid">
       <div className='row'>
         <div className='col-md-12 py-2' style={{ backgroundColor: '#0095A0' }}>
-          <Navbar />
+          <Navbar
+            setSearch={setSearch}
+            setData={setData}
+          />
         </div>
       </div>
       <div className='container'>
@@ -93,7 +126,9 @@ function App() {
           <div className='col-md-6 d-flex justify-content-end'>
             <div className='d-flex align-items-center'>
               <label className='me-1'>Sort By:</label>
-              <select defaultValue={'All Products'} className='productFilter'
+              <select
+                defaultValue={'All Products'}
+                className='productFilter'
                 onChange={({ target }) => setFilterValue(target.value)}
               >
                 <option value="All Products">All Products</option>
@@ -104,53 +139,19 @@ function App() {
             </div>
           </div>
           <div className='col-md-12 mt-5'>
-            <table className="table-sm" cellSpacing="0" width="100%">
-              <thead>
-                <tr>
-                  <th className="th-sm">Model </th>
-                  <th className="th-sm">Ram/Rom </th>
-                  <th className="th-sm text-center">Tag</th>
-                  <th className="th-sm">Price</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filterProducts(filterValue).length <= 0 ?
-                  <tr className="text-center">
-                    <th colSpan={4}>
-                      <div className='text-primary'>
-                        <span className="visually-hidden">Loading...</span>
-                        <div className="spinner-border" role="status">
-                        </div>
-                      </div>
-                    </th>
-                  </tr>
-                  : filterProducts(filterValue).slice(0, limit)?.map((item, index) => {
-                    return (
-                      <tr key={index}>
-                        <td className='w-auto'>
-                          <div className='d-flex align-items-center'>
-                            <img src={item?.phone_images[0]} className="card-img-top" key={index} alt="..." style={{ width: "100px", height: '100px' }} />
-                            <div className='mx-2'>
-                              <h5>{item?.phone_title}</h5>
-                              <h5>{item?.brand}</h5>
-                            </div>
-                          </div>
-                        </td>
-                        <td className='w-auto'>{item?.ram}/{item?.storage}</td>
-                        <td className='w-auto'>
-                          {item.tags.map((tagItem, index) => {
-                            return <span key={index} className={`${tagItem === "Best Value" ? "bg-success" : tagItem === "Best Camera" ? "bg-primary" : "bg-warning"} badge me-2`}>{tagItem}</span>
-                          })}
-                        </td>
-                        <td>{item.phone_price.toLocaleString('en-bn', { style: 'currency', currency: 'BDT' })}</td>
-                      </tr>)
-                  })
-                }
-              </tbody>
-            </table>
+            <Products filterData={filterData} itemOffset={itemOffset} />
+
+            <ReactPaginate
+              breakLabel="..."
+              nextLabel="next >"
+              onPageChange={handlePageClick}
+              pageRangeDisplayed={5}
+              pageCount={pageCount}
+              previousLabel="< previous"
+              renderOnZeroPageCount={null}
+            />
           </div>
         </div>
-
       </div>
     </div>
   );
