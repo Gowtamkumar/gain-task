@@ -1,4 +1,5 @@
 import React from 'react'
+import defaultimg from '../../asset/img/phone.jpeg'
 
 export default function Products({ filterData, itemOffset }) {
 
@@ -32,7 +33,7 @@ export default function Products({ filterData, itemOffset }) {
               <tr key={index}>
                 <td className='w-auto'>
                   <div className='d-flex align-items-center'>
-                    <img src={item?.phone_images ? item?.phone_images[0] : null} className="card-img-top" key={index} alt="..." style={{ width: "100px", height: '100px' }} />
+                    <img src={item?.phone_images ? item?.phone_images[0] : defaultimg} className="card-img-top" key={index} alt="..." style={{ width: "100px", height: '100px' }} />
                     <div className='mx-2'>
                       <h5>{item?.phone_title}</h5>
                       <h5>{item?.brand}</h5>
