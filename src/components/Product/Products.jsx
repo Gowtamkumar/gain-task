@@ -1,7 +1,7 @@
 import React from 'react'
 
 export default function Products({ filterData, itemOffset }) {
-  
+
   const endOffset = itemOffset + 20;
 
   return (
@@ -16,7 +16,7 @@ export default function Products({ filterData, itemOffset }) {
         </tr>
       </thead>
       <tbody>
-        {filterData.length <= 0 ?
+        {filterData.slice(itemOffset, endOffset).length <= 0 ?
           <tr className="text-center">
             <th colSpan={4}>
               <div className='text-primary'>
@@ -27,7 +27,7 @@ export default function Products({ filterData, itemOffset }) {
             </th>
           </tr>
           // slice(0, limit)
-          : filterData?.slice(itemOffset, endOffset).map((item, index) => {
+          : filterData?.sort((a, b) => (a.brand > b.brand) ? 1 : -1).slice(itemOffset, endOffset).map((item, index) => {
             return (
               <tr key={index}>
                 <td className='w-auto'>
@@ -49,9 +49,6 @@ export default function Products({ filterData, itemOffset }) {
               </tr>)
           })
         }
-        {/* <div className="d-grid gap-2 mb-3 mt-4">
-          <button className="btn btn-primary" type="button" >Load More</button>
-        </div> */}
       </tbody>
     </table>
   )

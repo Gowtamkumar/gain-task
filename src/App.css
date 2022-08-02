@@ -61,3 +61,22 @@
   font-size: 24px;
   line-height: 36px;
 }
+.pagination{
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  justify-content: center;
+ 
+}
+
+.pagination .page_num{
+  padding: 10px 15px 10px 15px;
+  list-style: none;
+  border: 1px solid gray;
+  text-decoration: none;
+}
+.active{
+  background-color: #0095A0;
+  color: #fff;
+}

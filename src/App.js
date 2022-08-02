@@ -59,12 +59,13 @@ function App() {
     });
 
     setFilterData(filterAll);
-
     // Pagination page count
     setPageCount(Math.ceil(newData.length / 20));
     
   }, [search, filterValue, datas, itemOffset])
 
+
+  
   // Pagination handle click.
   const handlePageClick = (event) => {
     const newOffset = (event.selected * 20) % newData.length;
@@ -143,9 +144,15 @@ function App() {
 
             <ReactPaginate
               breakLabel="..."
+              forcePage={pageCount}
               nextLabel="next >"
               onPageChange={handlePageClick}
-              pageRangeDisplayed={5}
+              pageRangeDisplayed={3}
+              containerClassName="pagination"
+              pageLinkClassName="page_num"
+              activeLinkClassName="active"
+              nextLinkClassName="page_num"
+              previousLinkClassName="page_num"
               pageCount={pageCount}
               previousLabel="< previous"
               renderOnZeroPageCount={null}
