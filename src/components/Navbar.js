@@ -18,11 +18,12 @@ export default function Navbar({ setSearch, setData }) {
 
   const handleSubmit = (event) => {
 
-    formDataValues.tags = formDataValues.tags.reduce((obj, item, index) => (obj[index] = item.value, obj), [])
+    formDataValues.tags = formDataValues.tags.map(item=> item.value);
     formDataValues.ram = Number(formDataValues.ram);
     formDataValues.storage = Number(formDataValues.storage);
     formDataValues.phone_price = Number(formDataValues.phone_price);
-    setData(formDataValues)
+    setData(formDataValues);
+    console.log("formDataValues", formDataValues);
 
     setFormDataValues();
     event.preventDefault();
