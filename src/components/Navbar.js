@@ -18,7 +18,7 @@ export default function Navbar({ setSearch, setData }) {
 
   const handleSubmit = (event) => {
 
-    formDataValues.tags = formDataValues.tags.map(item=> item.value);
+    formDataValues.tags = formDataValues.tags.map(item => item.value);
     formDataValues.ram = Number(formDataValues.ram);
     formDataValues.storage = Number(formDataValues.storage);
     formDataValues.phone_price = Number(formDataValues.phone_price);
@@ -81,7 +81,7 @@ export default function Navbar({ setSearch, setData }) {
                         onChange={handleChange}
                         type="text"
                         name="phone_title"
-                        value={formDataValues?.phone_title}
+                        value={formDataValues?.phone_title || ""}
                         className="form-control"
                         id="productName"
                         placeholder="Enter Product name"
@@ -92,7 +92,7 @@ export default function Navbar({ setSearch, setData }) {
                       <input
                         onChange={handleChange}
                         name="brand"
-                        value={formDataValues?.brand}
+                        value={formDataValues?.brand || ""}
                         type="text"
                         className="form-control"
                         id="brand"
@@ -104,7 +104,7 @@ export default function Navbar({ setSearch, setData }) {
                       <input
                         onChange={handleChange}
                         name='ram'
-                        value={formDataValues?.ram}
+                        value={formDataValues?.ram || ""}
                         type="number"
                         className="form-control"
                         id="ram"
@@ -116,7 +116,7 @@ export default function Navbar({ setSearch, setData }) {
                       <input
                         onChange={handleChange}
                         name='storage'
-                        value={formDataValues?.storage}
+                        value={formDataValues?.storage || ""}
                         type="number"
                         className="form-control"
                         id="rom"
@@ -131,6 +131,7 @@ export default function Navbar({ setSearch, setData }) {
                         placeholder="Select color"
                         // isSearchable={true}
                         width='100%'
+                        value={formDataValues?.tags || ""}
                         isMulti
                         name="tags"
                         onChange={(value) => handleChange({ target: { name: 'tags', value } })}
@@ -143,7 +144,7 @@ export default function Navbar({ setSearch, setData }) {
                         onChange={handleChange}
                         name='phone_price'
                         type="number"
-                        value={formDataValues?.phone_price}
+                        value={formDataValues?.phone_price || ""}
                         className="form-control"
                         id="price"
                         placeholder="Enter Price"
